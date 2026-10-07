@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Top Deltarune Battles List - v0.10</title>
+    
+    <!-- EmailJS SDK -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script type="text/javascript">
+       (function(){
+         
+          emailjs.init("SDWlEEo8JwbLEwu2e");
+       })();
+    </script>
+
+    <style>
+        body {
+            background-color: #0d001a;
+            color: #d19fe8;
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        h1, h2, h3 {
+            color: #a855f7;
+            text-shadow: 0 0 10px #7e22ce;
+        }
+
+        .author-tag {
+            font-size: 18px;
+            color: #e9d5ff;
+            font-weight: normal;
+            margin-left: 10px;
+            text-shadow: none;
+        }
+
+        button {
+            background-color: #2e1065;
+            color: #f3e8ff;
+            border: 2px solid #a855f7;
+            padding: 10px 15px;
+            font-size: 14px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-right: 5px;
+            margin-bottom: 5px;
+        }
+
+        button:hover {
+            background-color: #a855f7;
+            color: #0d001a;
+        }
+
+        button.active {
+            background-color: #a855f7;
+            color: #0d001a;
+            font-weight: bold;
+        }
+
+        #display-area, form {
+            background-color: #180828;
+            border: 1px solid #581c87;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+        }
+
+        .info-card {
+            background-color: #260a42;
+            border-left: 4px solid #a855f7;
+            padding: 12px;
+            margin-bottom: 12px;
+            color: #e9d5ff;
+            border-radius: 4px;
+        }
+
+        input[type="text"], input[type="url"], select {
+            background-color: #0d001a;
+            border: 1px solid #a855f7;
+            color: #ffffff;
+            padding: 8px;
+            border-radius: 4px;
+            width: 260px;
+        }
+
+        .checkbox-group {
+            margin-top: 5px;
+        }
+
+        .checkbox-group label {
+            display: block;
+            margin-bottom: 6px;
+            cursor: pointer;
+        }
+
+        .checkbox-group input[type="checkbox"] {
+            margin-right: 8px;
+            accent-color: #a855f7;
+            cursor: pointer;
+        }
+
+        /* Error message styling */
+        .error-msg {
+            color: #ff3333;
+            font-size: 13px;
+            margin-top: 8px;
+            display: none; /* Hidden by default */
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Top Deltarune Battles List <span class="author-tag">By: Dragon Shark</span></h1>
+        <p>Version 0.10 (In Development)</p>
+    </header>
+
+    <nav>
+        <button id="btn-normal" class="active" onclick="showCategory('Normal Battles', this)">Normal Battles</button>
+        <button id="btn-modded" onclick="showCategory('Modded Battles', this)">Modded Battles</button>
+        <button id="btn-mixed" onclick="showCategory('Mixed Battles', this)">Mixed Battles</button>
+        <button id="btn-players" onclick="showCategory('Top Players', this)">Top Players</button>
+        <button id="btn-info" onclick="showCategory('Info', this)">Info</button>
+    </nav>
+
+    <main>
+        <div id="display-area">
+            <h2 id="category-title">Normal Battles</h2>
+            <div id="category-content">
+                <p>No battles submitted yet! Be the first to submit a verified play.</p>
+            </div>
+        </div>
+    </main>
+
+    <section>
+        <h2>Submit a Completion</h2>
+        <form id="submission-form">
+            <label for="player-name">Player Name (make it the same name if you already put something):</label><br>
+            <input type="text" id="player-name" placeholder="Enter your username"><br><br>
+
+            <label for="battle-name">Battle Name:</label><br>
+            <input type="text" id="battle-name" placeholder="Enter battle name"><br><br>
+
+            <label for="battle-category">Category:</label><br>
+            <select id="battle-category">
+                <option value="">-- Select Category --</option>
+                <option value="Normal Battles">Normal Battles</option>
+                <option value="Modded Battles">Modded Battles</option>
+            </select><br><br>
+
+            <label>Modifiers:</label>
+            <div class="checkbox-group">
+                <label><input type="checkbox" name="modifier" value="No-Hit"> No-Hit</label>
+                <label><input type="checkbox" name="modifier" value="No Heal"> No Heal</label>
+                <label><input type="checkbox" name="modifier" value="No Act"> No Act</label>
+                <label><input type="checkbox" name="modifier" value="No Fight"> No Fight</label>
+                <label><input type="checkbox" name="modifier" value="Blindfolded"> Blindfolded (needs proof that blindfold works)</label>
+            </div><br>
+
+            <label for="video-link">Video Proof (Hand Cam required):</label><br>
+            <input type="url" id="video-link" placeholder="https://youtube.com/..."><br><br>
+
+            <button type="button" id="submit-btn">Submit Battle</button>
+
+            <!-- Bright red error message text -->
+            <p id="error-message" class="error-msg">Didn't do everything</p>
+        </form>
+    </section>
+
+    <script>
+        function showCategory(categoryName, clickedButton) {
+            document.getElementById('category-title').innerText = categoryName;
+
+            let contentBox = document.getElementById('category-content');
+            
+            if (categoryName === 'Normal Battles' || categoryName === 'Modded Battles' || categoryName === 'Mixed Battles') {
+                contentBox.innerHTML = "<p>No battles submitted yet! Be the first to submit a verified play.</p>";
+            } 
+            else if (categoryName === 'Top Players') {
+                contentBox.innerHTML = "<p>No players ranked yet! Complete verified battles to earn points and climb the leaderboard.</p>";
+            }
+            else if (categoryName === 'Info') {
+                contentBox.innerHTML = `
+                    <div class="info-card">
+                        <h3>Normal Battles</h3>
+                        <p>You can put any original battle from Deltarune and mix them. You can do that in "Deltarune Battles" in Roblox or with Deltarune mods, for example 2 Jevils and 1 King.</p>
+                    </div>
+                    <div class="info-card">
+                        <h3>Modded Battles</h3>
+                        <p>Put any Deltarune mod battle that is not inappropriate or weird, for example Kaizo Knight.</p>
+                    </div>
+                    <div class="info-card">
+                        <h3>Mixed Battles</h3>
+                        <p>Any battle from both categories combined.</p>
+                    </div>
+                `;
+            }
+
+            let buttons = document.querySelectorAll('nav button');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            if (clickedButton) {
+                clickedButton.classList.add('active');
+            }
+        }
+
+        // Form submission logic
+        document.getElementById('submit-btn').addEventListener('click', function() {
+            let playerName = document.getElementById('player-name').value.trim();
+            let battleName = document.getElementById('battle-name').value.trim();
+            let category = document.getElementById('battle-category').value;
+            let videoLink = document.getElementById('video-link').value.trim();
+            let errorMsg = document.getElementById('error-message');
+
+            // Check if any required field is empty
+            if (!playerName || !battleName || !category || !videoLink) {
+                errorMsg.style.display = 'block'; // Show bright red error text
+                return;
+            } else {
+                errorMsg.style.display = 'none'; // Hide error text if complete
+            }
+
+            // Gather checked modifiers
+            let selectedModifiers = [];
+            let checkboxes = document.querySelectorAll('input[name="modifier"]:checked');
+            checkboxes.forEach((checkbox) => {
+                selectedModifiers.push(checkbox.value);
+            });
+
+            // Prepare template parameters for EmailJS
+            let templateParams = {
+                player_name: playerName,
+                battle_name: battleName,
+                category: category,
+                modifiers: selectedModifiers.join(', ') || "None",
+                video_link: videoLink
+            };
+
+            
+            emailjs.send ('service_74ka279', 'template_s8i8y05', templateParams)
+                .then(function(response) {
+                    alert('Submission received! Dragon Shark will review your video proof soon.');
+                    document.getElementById('submission-form').reset();
+                }, function(error) {
+                    alert('Failed to send submission. Check your EmailJS setup or try again later.');
+                    console.log('EmailJS Error:', error);
+                });
+        });
+    </script>
+
+</body>
+</html>
